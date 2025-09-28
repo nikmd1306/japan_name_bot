@@ -1,0 +1,26 @@
+[project]
+name = "japan-name-bot"
+version = "0.1.0"
+description = "Translate your name to Japanese"
+readme = "README.md"
+authors = [
+    { name = "Nikita Matsko", email = "nikmd1306@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "aerich>=0.9.1",
+    "aiogram>=3.22.0",
+    "asyncpg>=0.30.0",
+    "jaconv>=0.4.0",
+    "pydantic-settings>=2.11.0",
+    "pykakasi>=2.3.0",
+    "tortoise-orm>=0.25.1",
+    "unidecode>=1.4.0",
+]
+
+[project.scripts]
+japan-name-bot = "japan_name_bot:main"
+
+[build-system]
+requires = ["uv_build>=0.8.13,<0.9.0"]
+build-backend = "uv_build"
