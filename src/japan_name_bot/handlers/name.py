@@ -7,7 +7,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from japan_name_bot.config import settings
 from japan_name_bot.models import NameRequest, User
-from japan_name_bot.services.name_conversion import convert_name_offline
+from japan_name_bot.services.name_conversion import convert_name as convert_name_v2
 from japan_name_bot.services.subscription import is_user_subscribed
 from japan_name_bot.states import NameStates
 
@@ -21,7 +21,7 @@ async def on_name(message: types.Message, state: FSMContext, bot: Bot) -> None:
     user_id = message.from_user.id
     input_name = message.text.strip()
 
-    katakana, romaji = convert_name_offline(input_name)
+    katakana, romaji = convert_name_v2(input_name)
 
     user = await User.get(id=user_id)
     await NameRequest.create(
