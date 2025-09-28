@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from aiogram import Bot, F, Router, types
+from aiogram.enums import ParseMode
 
 from japan_name_bot.config import settings
 from japan_name_bot.models import NameRequest
@@ -33,7 +34,13 @@ async def on_join(event: types.ChatMemberUpdated, bot: Bot) -> None:
 
     await bot.send_message(
         chat_id=user_id,
-        text=f"Ваше имя: {req.katakana}\nRomaji: {req.romaji}",
+        text=f"<b>Твое имя:</b> {req.katakana}\n\n<b>Romaji:</b> {req.romaji}",
+        parse_mode=ParseMode.HTML,
+    )
+    await bot.send_message(
+        chat_id=user_id,
+        text="Интересно звучит, не так ли?\n\n"
+        "Узнай, как по-японски будет имя твоего друга и скинь ему!",
     )
     req.delivered = True
     await req.save(update_fields=["delivered"])
