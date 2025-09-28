@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.scripts]
-japan-name-bot = "japan_name_bot.bot:main"
+japan-name-bot = "japan_name_bot.bot:cli"
 
 [build-system]
 requires = ["uv_build>=0.8.13,<0.9.0"]
