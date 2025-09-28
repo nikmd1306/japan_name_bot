@@ -3,6 +3,7 @@ from __future__ import annotations
 from aiogram import Bot, Router, types
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from japan_name_bot.config import settings
 from japan_name_bot.models import NameRequest, User
@@ -31,12 +32,26 @@ async def on_name(message: types.Message, state: FSMContext, bot: Bot) -> None:
         provider="offline",
     )
 
-    subscribed = await is_user_subscribed(bot, settings.CHANNEL_ID, user_id)
+    subscribed = await is_user_subscribed(bot, None, user_id)
     if subscribed:
         await message.answer(f"Ваше имя: {katakana}\nRomaji: {romaji}")
         await state.set_state(NameStates.waiting_name)
     else:
-        await message.answer(
-            "Пожалуйста, подпишитесь на канал и результат придет автоматически:"
-        )
+        # Построим ссылку на канал, если указан username (@channel)
+        username = settings.CHANNEL_USERNAME
+        url = f"https://t.me/{username.lstrip('@')}" if username else None
+        if url:
+            kb = InlineKeyboardMarkup(
+                inline_keyboard=[[InlineKeyboardButton(text="Подписаться", url=url)]]
+            )
+            await message.answer(
+                "Пожалуйста, подпишитесь на канал. "
+                "Результат придет автоматически после подписки.",
+                reply_markup=kb,
+            )
+        else:
+            await message.answer(
+                "Пожалуйста, подпишитесь на канал. "
+                "Результат придет автоматически после подписки.",
+            )
         # оставляем запись как pending (delivered=False)

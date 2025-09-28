@@ -3,7 +3,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     BOT_TOKEN: str
-    CHANNEL_ID: str
+    CHANNEL_ID: int | None = None
+    CHANNEL_USERNAME: str | None = None
     DATABASE_URL: str
     DEFAULT_PROVIDER: str | None = None
 

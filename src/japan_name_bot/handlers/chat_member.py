@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from aiogram import Bot, F, Router, types
 
+from japan_name_bot.config import settings
 from japan_name_bot.models import NameRequest
 
 router = Router()
@@ -11,6 +12,15 @@ router = Router()
     F.new_chat_member.status.in_({"member", "administrator", "creator"})
 )
 async def on_join(event: types.ChatMemberUpdated, bot: Bot) -> None:
+    if settings.CHANNEL_ID is not None:
+        if event.chat.id != settings.CHANNEL_ID:
+            return
+    else:
+        desired_username = (settings.CHANNEL_USERNAME or "").lstrip("@").lower()
+        actual_username = (event.chat.username or "").lstrip("@").lower()
+        if not desired_username or actual_username != desired_username:
+            return
+
     user_id = event.new_chat_member.user.id
 
     req = (
